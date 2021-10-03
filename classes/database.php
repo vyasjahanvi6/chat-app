@@ -1,5 +1,6 @@
 <?php 
 
+// basic database configurations
 Class Database
 {
 
