@@ -9,7 +9,6 @@ Class Database
 	//construct
 	function __construct()
 	{
-
 		$this->con = $this->connect();
 	}
 
@@ -20,7 +19,6 @@ Class Database
 		$string = "mysql:host=localhost;dbname=plushchat_db";
 		try
 		{
-
 			$connection = new PDO($string,DBUSER,DBPASS);
 			return $connection;
 
@@ -29,9 +27,6 @@ Class Database
 			echo $e->getMessage();
 			die;
 		}
-
-		return false;
-
 	}
 
 	//write to database
@@ -41,14 +36,8 @@ Class Database
 		$con = $this->connect();
 		$statement = $con->prepare($query);
 		$check = $statement->execute($data_array);
-
-		if($check)
-		{
-			return true;
-		}
-
-		return false;
-
+		
+		return $check;
 	}
 
 	//read from database
@@ -59,18 +48,18 @@ Class Database
 		$statement = $con->prepare($query);
 		$check = $statement->execute($data_array);
 
-		if($check)
+		if(!$check)
 		{
-			$result = $statement->fetchAll(PDO::FETCH_OBJ);
-			if(is_array($result) && count($result) > 0)
-			{
-				return $result;
-			}
 			return false;
 		}
-
+		
+		$result = $statement->fetchAll(PDO::FETCH_OBJ);
+		if(is_array($result) && count($result) > 0)
+		{
+			return $result;
+		}
+		
 		return false;
-
 	}
 	
 	
@@ -83,24 +72,22 @@ Class Database
 		$statement = $con->prepare($query);
 		$check = $statement->execute($arr);
 
-		if($check)
+		if(!$check)
 		{
-			$result = $statement->fetchAll(PDO::FETCH_OBJ);
-			if(is_array($result) && count($result) > 0)
-			{
-				return $result[0];
-			}
 			return false;
 		}
-
+			
+		$result = $statement->fetchAll(PDO::FETCH_OBJ);
+		if(is_array($result) && count($result) > 0)
+		{
+			return $result[0];
+		}
 		return false;
-
 	}
 	
 
 	public function generate_id($max)
 	{
-
 		$rand = "";
 		$rand_count = rand(4,$max);
 		for ($i=0; $i < $rand_count; $i++) { 
